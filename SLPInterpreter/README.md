@@ -3,7 +3,7 @@
 
 In summary, here is the directory structure:
 
-** SLPInterpreter **
+**SLPInterpreter**
   - build.xml                                     (Ant build file - NetBeans will generate this for you automatically)
   - src/main/java/slpinterpreter/                 (slpinterpreter -- program source code package)  
   - src/main/java/slpinterpreter/Driver.java      (main Driver to run project)  
