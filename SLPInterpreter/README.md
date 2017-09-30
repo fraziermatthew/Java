@@ -1,16 +1,13 @@
 # Straight Line Program Interpreter
 
-The project follows the Ch 1 introductory programming exercise in Appel's compiler textbook.
-
 Creating the project:
-1. Download and unzip the project starter files.
+1. Download and unzip the project files.
 2. Open NetBeans
 3. Create a new NetBeans project. (File -> New Project)
 4. Choose "Java Project With Existing Resources".
 5. Give the project a "Project Name". Set the "Project Folder" to the location of the unzip'ed starter files.
 6. Set the "Existing Sources: Source Package Folders" to be the slpinterpreter folder that exists here: src/main/java/slpinterpreter
 7. Set the "Existing Sources: Test Package Folders" to be the slpinterpreter folder that exists here: src/test/java/slpinterpreter
-(Warning: in my NetBeans, I receive a "Resolve Project Problems Warning" at this point.)
 
 Configuring JUnit Testing Framework:
 1. Run -> "Set Project Configuration" -> Customize Libraries -> "Compile Tests"
@@ -34,6 +31,9 @@ I've provided five testing files to you, each one contains a single StraightLine
 
 Running the tests: 
 1. Select "Run" -> "Test Project". 
+
 The output will include how many tests passed and failed (your program output the wrong answer). Once everything is implemented, you should have 10 tests. 
 
 Of course, in addition to the five test programs that I've already provided, please feel free to create your own test programs to supplement the tests that I have provided.
+
+The project follows the Ch 1 introductory programming exercise in Appel's compiler textbook.
