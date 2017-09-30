@@ -1,5 +1,4 @@
 # Java
-@author fraziermatthew
 A listing of beginnner to intermediate level Java examples, data structures, algorithms, and projects. Inspired by various course projects at West Chester University of Pennsylvaia's Computer Science Department.
 
 Some of the packages include Junit and Ant testing. Viewers should familiarize themselves with running both Junit or Ant tests. Creating your own test cases is highly encouraged. 
