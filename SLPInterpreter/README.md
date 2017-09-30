@@ -1,4 +1,4 @@
-#Straight Line Program Interpreter
+# Straight Line Program Interpreter
 
 The project follows the Ch 1 introductory programming exercise in Appel's compiler textbook.
 
