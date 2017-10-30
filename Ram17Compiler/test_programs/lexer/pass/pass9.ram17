@@ -1,0 +1,9 @@
+/* Skip this comment */
+class Test9 {
+    public static void main(String[] a) {
+        integer bool_integer = 17;
+        bool flag = bool_integer;
+        this.return;
+    }
+}
+

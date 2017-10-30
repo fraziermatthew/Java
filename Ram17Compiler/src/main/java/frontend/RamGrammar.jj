@@ -1,0 +1,546 @@
+/**
+ * Compiler - RAM17 Scanner/Parser.
+ *
+ * @author fraziermattew
+ */
+
+options {
+  JAVA_UNICODE_ESCAPE = true;
+  DEBUG_PARSER = false;
+  STATIC = false;
+}
+
+PARSER_BEGIN(RamParser)
+    package frontend.generated;
+    import java.io.FileNotFoundException;
+
+    public class RamParser {
+        public static void main(String[] args) 
+        throws ParseException, TokenMgrError, FileNotFoundException
+        {
+            if (args.length == 0) {
+                RamParser parser = new RamParser( System.in ) ;
+                parser.Goal();
+            } else {
+                java.io.InputStream is = new 
+                    java.io.FileInputStream(new java.io.File(args[0]));
+                RamParser parser = new RamParser( is ) ;
+                parser.Goal();
+            }       
+        }
+    }
+PARSER_END(RamParser)
+
+SKIP : {
+
+    " " | "\t" | "\r" | "\n" | "\f"
+
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Alternate implementation of MULTI_LINE using states
+//
+// SKIP : {
+//
+//   "/*" : IN_COMMENT
+//
+// }
+//
+// <IN_COMMENT> SPECIAL_TOKEN : {
+//
+//     <~[]>
+//
+// }
+//
+// <IN_COMMENT> SKIP : {
+//
+//    "*/": DEFAULT
+//
+// }
+///////////////////////////////////////////////////////////////////////////////
+
+SPECIAL_TOKEN: {
+
+    < SINGLE_LINE: "//" (~["\n","\r"])* ("\n" | "\r" | "\r\n")? >
+    | 
+    < MULTI_LINE: "/*" (~["*"])* "*" (~["*","/"] (~["*"])* "*" | "*")* "/" >
+  
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Includes Traditional For Loop
+// “for” “(“ Expression “;” Expression “;” Expression “;” “)” “{“ Statement “}”
+// Leading zeros are ignored
+// To include leading zeros change the INTEGER_LITERAL RegEx to (["0"-"9"])*
+// Negative numbers are ignored
+// SUBTRACTION "-" minus sign is found in Lexical Analysis
+// Negative numbers determined by the Parser
+///////////////////////////////////////////////////////////////////////////////
+
+TOKEN : {
+
+    /* Keywords */
+
+    < IF: "if" >
+    | 
+    < ELSE: "else" >
+    | 
+    < CLASS: "class" >
+    | 
+    < PUBLIC: "public" >
+    | 
+    < STATIC: "static" >
+    | 
+    < VOID: "void" >
+    | 
+    < MAIN: "main" >
+    | 
+    < EXTENDS: "extends" >
+    | 
+    < WHILE: "while" >
+    | 
+    < AND: "and" >
+    | 
+    < OR: "or" >
+    | 
+    < DOT: "." >
+    | 
+    < COMMA: "," >
+    | 
+    < THIS: "this" >
+    | 
+    < NEW: "new" >
+    | 
+    < LENGTH: "length" >
+    | 
+    < PRINTLN: "println" >
+    | 
+    < PRINT: "print" >
+    | 
+    < RETURN: "return" >
+    | 
+    < FOR: "for" >
+    | 
+    < NOT: "!" >
+    | 
+    < TRUE: "true" >
+    | 
+    < FALSE: "false" >
+    |
+
+    /* Data Type */
+ 
+    < STRING: "String" >
+    | 
+    < INTEGER: "integer" >
+    | 
+    < BOOLEAN: "bool" >
+    |
+
+    /* Operators */
+ 
+    < ASSIGN: "=" >
+    | 
+    < SEMICOLON: ";" >
+    | 
+    < ADD_COMBO: "+=" >
+    | 
+    < SUB_COMBO: "-=" >
+    | 
+    < ADDITION: "+" >
+    | 
+    < SUBTRACTION: "-" >
+    | 
+    < MULTIPLY: "*" >
+    | 
+    < LPAREN: "(" >
+    | 
+    < RPAREN: ")" >
+    | 
+    < LCURLY: "{" >
+    | 
+    < RCURLY: "}" >
+    | 
+    < LBRACKET: "[" >
+    | 
+    < RBRACKET: "]" >
+    | 
+    < EQUAL: "eq" >
+    | 
+    < NOTEQUAL: "ne" >
+    | 
+    < GREATER_THAN_OR_EQUAL: "ge" >
+    | 
+    < LESS_THAN_OR_EQUAL: "le" >
+    | 
+    < GREATER_THAN: ">" >
+    | 
+    < LESS_THAN: "<" >
+    |
+
+    /* Values */
+
+    < IDENTIFIER: (["a"-"z"] | ["A"-"Z"])
+                    (["a"-"z"] | ["A"-"Z"] | ["0"-"9"] | ["_"])* >
+    | 
+    < INTEGER_LITERAL: ["1"-"9"] (["0"-"9"])* | "0" >
+
+}
+
+
+void RamToken():
+{}
+{
+
+    <CLASS> | <IDENTIFIER> | <LCURLY> | <PUBLIC> | <STATIC> | <VOID> | <MAIN> 
+    | <LBRACKET> | <RBRACKET> | <RPAREN> | <INTEGER> | <SEMICOLON> | <ASSIGN>  
+    | <WHILE> | <LESS_THAN> | <GREATER_THAN> | <AND> | <EQUAL> | <ADD_COMBO> | <IF> 
+    | <PRINTLN> | <PRINT> | <MULTIPLY> | <SUBTRACTION> | <SUB_COMBO> | <DOT>
+    | <NEW> | <RETURN> | <GREATER_THAN_OR_EQUAL> | <NOTEQUAL> | <ELSE> | <OR> 
+    | <COMMA> | <LENGTH> | <THIS> | <LESS_THAN_OR_EQUAL> | <ADDITION> | <BOOLEAN>
+    | <STRING> | <INTEGER_LITERAL> | <RCURLY> | <EXTENDS> | <LPAREN> | <FOR> | <NOT>
+    | <TRUE> | <FALSE>
+
+}
+
+void Goal() :
+{}
+{
+
+    // The following is a simple grammar that will allow you
+    // to test the generated scanner.
+    /*  ( RamToken() )*  */
+
+
+    // The following is a simple grammar that will allow you
+    // to test the generated parser.
+    Program() <EOF>
+
+}
+
+// JavaCC performs for various syntactic and sematic checks.
+// The detection of errors will result in the parser to producing warnings.
+// To remove these warnings, the grammar must be left factored, left recursion
+// must be removed, and a lookahead is needed to resolve ambiguity.
+
+void Program() :
+{}
+{
+    MainClass() ( ClassDeclaration() )*
+}
+
+void MainClass() :
+{}
+{
+
+    <CLASS> Identifier() <LCURLY> <PUBLIC> <STATIC> <VOID> <MAIN> <LPAREN> 
+    <STRING> <LBRACKET> <RBRACKET> Identifier() <RPAREN> <LCURLY> Statement()
+    <RCURLY> <RCURLY>
+
+}
+
+void ClassDeclaration():
+{} 
+{ 
+
+    <CLASS> Identifier() [<EXTENDS> Identifier()] <LCURLY> ( VarDeclaration() )* 
+    ( MethodDeclaration() )* <RCURLY>
+
+}
+
+void VarDeclaration():
+{} 
+{ 
+
+    Type() Identifier() <SEMICOLON>
+
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Resolved - Warning: Choice conflict in (…)* construct...
+// To remove ambiguity, a LOOKAHEAD of VarDeclaration is used. 
+// There are 0 or more VarDeclaration and followed by 0 or more Statements. 
+// When the parser encounters <IDENTIFIER>, it must make a choice 
+// on if this token belongs to VarDeclaration or Statement, conflict of choices.
+// With LOOKAHEAD, before matching <IDENTIFIER>, the parser will check the next 
+// token and proceeds with the VarDeclaration match only if the token is of type 
+// <IDENTIFIER>. Otherwise, the parser will match to Statement.
+///////////////////////////////////////////////////////////////////////////////
+
+void MethodDeclaration():
+{} 
+{ 
+
+    <PUBLIC> Type() Identifier() <LPAREN> [Type() Identifier() 
+    ( <COMMA> Type() Identifier() )*] <RPAREN> <LCURLY> 
+    ( LOOKAHEAD(VarDeclaration())VarDeclaration() )* ( Statement() )* 
+    <RETURN> Expression() <SEMICOLON> <RCURLY>
+
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Resolved - Warning : Choice conflict involving two expansions at...
+// To remove ambiguity, the Type() production was left factored. 
+// When the parser encounters <INTEGER>, it must make a choice on if the next 
+// token is null or <LBRACKET>. With a new production, TypePrime(), 
+// the parser can match the next token without choice conflict.
+//
+// T -> "integer" "[" "]"
+// T -> "bool"
+// T -> "integer"
+// T -> I
+//
+// This is changed to... (Left Factor)
+//
+// T -> "integer" TPrime
+// T -> "bool"
+// T -> I
+// TPrime -> "[" "]"
+// TPrime -> 
+///////////////////////////////////////////////////////////////////////////////
+
+void Type():
+{} 
+{ 
+
+    <INTEGER> TypePrime()
+    | 
+    <BOOLEAN>
+    | 
+    Identifier()
+
+}
+
+
+void TypePrime():
+{} 
+{
+
+  [ <LBRACKET> <RBRACKET> ]
+
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Resolved - Warning : Choice conflict involving two expansions at...
+// To remove ambiguity, the Statement() production was left factored. 
+// When the parser encounters <IDENTIFIER>, it must make a choice on if the next 
+// token is ( <ASSIGN> | <ADD_COMBO> | <SUB_COMBO> ) or <LBRACKET>. 
+// With a new production, StatementPrime(), the parser can match the next token
+// without choice conflict.
+//
+// S -> "{" ( S )* "}"
+// S -> "if" "(" E ")" S "else" S
+// S -> "while" "(" E ")" S
+// S -> "println" "(" E ")" ";"
+// S -> "print" "(" E ")" ";"
+// S -> I "=" E ";"
+// S -> I "[" E "]" "=" E ";"
+//
+// This is changed to... (Left Factor)
+//
+// S -> "{" ( S )* "}"
+// S -> "if" "(" E ")" S "else" S
+// S -> "while" "(" E ")" S
+// S -> "println" "(" E ")" ";"
+// S -> "print" "(" E ")" ";"
+// S -> I SPrime
+// SPrime -> "=" E ";"
+// SPrime -> "[" E "]" "=" E ";"
+//
+// Resolved - Warning: Choice conflict in (…)* construct...
+// To remove ambiguity, a LOOKAHEAD of Statement is used. 
+// There are 0 or more Statement. 
+// When the parser encounters <LCURLY>, it must make a choice 
+// on if this token belongs to Statement or Statement, conflict of choices.
+// With LOOKAHEAD, before matching <LCURLY>, the parser will check the next 
+// token and proceeds with the Statement match only if the token is of type 
+// <LCURLY>. Otherwise, the parser will match to Statement.
+///////////////////////////////////////////////////////////////////////////////
+
+void Statement():
+{} 
+{ 
+
+    <LCURLY> ( Statement() )* <RCURLY>
+    | 
+    <IF> <LPAREN> Expression() <RPAREN> Statement() <ELSE> Statement()
+    | 
+    <WHILE> <LPAREN> Expression() <RPAREN> Statement()
+    | 
+    <FOR> <LPAREN> Statement() Expression() <SEMICOLON> Expression() <RPAREN>
+         ( LOOKAHEAD(Statement())Statement() )*
+    | 
+    <PRINTLN> <LPAREN> Expression() <RPAREN> <SEMICOLON>
+    | 
+    <PRINT> <LPAREN> Expression() <RPAREN> <SEMICOLON>
+    | 
+    Identifier() StatementPrime()
+
+}
+
+void StatementPrime():
+{} 
+{ 
+
+    ( <ASSIGN> | <ADD_COMBO> | <SUB_COMBO> ) Expression() <SEMICOLON>
+    | 
+    <LBRACKET> Expression() <RBRACKET> ( <ASSIGN> | <ADD_COMBO> | <SUB_COMBO> ) 
+        Expression() <SEMICOLON>
+
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Resolved - Warning : Choice conflict involving two expansions at...
+// To remove ambiguity, the Expression() production was left factored. 
+// When the parser encounters <NEW>, it must make a choice on if the next 
+// token is <INTEGER> or <IDENTIFIER>. With a new production, ExpressionPrime(), 
+// the parser can match the next token without choice conflict.
+//
+// Resolved - Warning : Choice conflict involving two expansions at...
+// To remove ambiguity, the Expression() production was left factored. 
+// When the parser encounters <DOT>, it must make a choice on if the next 
+// token is <LENGTH> or <IDENTIFIER>. With a new production, 
+// ExpressionDoublePrime(), the parser can match the next token
+// without choice conflict.
+//
+// E -> E ( "AND" | "OR" | "LE" | "GE"| "+" 
+//          | "-" | "*" | "<" | ">" | "EQ" | "NE" ) E
+// E -> E "[" E "]"
+// E -> E "." "length"
+// E -> E "." I "(" ( E ( "," E )* )? ")"
+// E -> <INTEGER_LITERAL>
+// E -> "true"
+// E -> "false"
+// E -> I
+// E -> "this"
+// E -> "new" "integer" "[" E "]"
+// E -> "new" I "(" ")"
+// E -> "!" E
+// E -> "(" E ")"
+//
+// This is changed to... (Left Factor)
+//
+// E -> E ( "AND" | "OR" | "LE" | "GE"| "+" 
+//          | "-" | "*" | "<" | ">" | "EQ" | "NE" ) E
+// E -> E "[" E "]"
+// E -> E "." EDoublePrime
+// E -> <INTEGER_LITERAL>
+// E -> "true"
+// E -> "false"
+// E -> I
+// E -> "this"
+// E -> "new" EPrime
+// E -> "!" E
+// E -> "(" E ")"
+// EPrime -> "integer" "[" E "]"
+// EPrime -> I "(" ")"
+// EDoublePrime -> "length"
+// EDoublePrime -> I "(" ( E ( "," E )* )? ")"
+//
+// Resolved - Error: Left recursion detected...
+// Left recursion was removed from the Expression() production. 
+//
+// This is changed to... (Remove Left Recursion)
+//
+// E -> <INTEGER_LITERAL> ETriplePrime
+// E -> "true" ETriplePrime
+// E -> "false" ETriplePrime
+// E -> I ETriplePrime
+// E -> "this" ETriplePrime
+// E -> "new" EPrime ETriplePrime
+// E -> "!" E ETriplePrime
+// E -> "(" E ")" ETriplePrime
+// EPrime -> "integer" "[" E "]"
+// EPrime -> I "(" ")"
+// EDoublePrime -> "length"
+// EDoublePrime -> I "(" ( E ( "," E )* )? ")"
+// ETriplePrime -> ( "AND" | "OR" | "LE" | "GE"| "+" 
+//                   | "-" | "*" | "<" | ">" | "EQ" | "NE" ) E ETriplePrime
+// ETriplePrime -> "[" E "]" ETriplePrime
+// ETriplePrime -> "." EDoublePrime ETriplePrime
+// ETriplePrime ->
+//
+// This was done using the formula: 
+//
+// A -> a | Ax
+//
+// This is changed to... (Left Recursion)
+//
+// A -> x APrime
+// APrime -> a APrime
+// APrime -> 
+//
+// Alternate approach to remove left recursion is as follows:
+//
+// A -> a | Ax
+//
+// This is changed to... (Left Recursion)
+//
+// A -> a (x)*
+////////////////////////////////////////////////////////////////////////////////
+
+void Expression() :
+{} 
+{ 
+
+    <INTEGER_LITERAL> ExpressionTriplePrime()
+    | 
+    <TRUE> ExpressionTriplePrime()
+    | 
+    <FALSE> ExpressionTriplePrime()
+    | 
+    Identifier() ExpressionTriplePrime()
+    | 
+    <THIS> ExpressionTriplePrime()
+    | 
+    <NEW> ExpressionPrime() ExpressionTriplePrime()
+    | 
+    <NOTEQUAL> Expression() ExpressionTriplePrime()
+    | 
+    <LPAREN> Expression() <RPAREN> ExpressionTriplePrime()
+
+}
+
+void ExpressionPrime() :
+{} 
+{
+
+    <INTEGER> <LBRACKET> Expression() <RBRACKET>
+    | 
+    Identifier() <LPAREN> <RPAREN>
+
+}
+
+void ExpressionDoublePrime() :
+{} 
+{
+
+    <LENGTH>
+    | 
+    Identifier() <LPAREN> [ Expression() ( <COMMA> Expression() )*] <RPAREN>
+
+}
+
+void ExpressionTriplePrime() :
+{} 
+{
+
+    ( <AND> | <OR> | <ADDITION> | <SUBTRACTION> | <MULTIPLY>
+        | <EQUAL> | <NOTEQUAL> | <LESS_THAN> | <GREATER_THAN>
+        | <GREATER_THAN_OR_EQUAL> | <LESS_THAN_OR_EQUAL> ) 
+        Expression() ExpressionTriplePrime()
+    | 
+    <LBRACKET> Expression() <RBRACKET> ExpressionTriplePrime()
+    | 
+    <DOT> ExpressionDoublePrime() ExpressionTriplePrime()
+    | {} // EPSILON
+
+}
+
+void Identifier() :
+{} 
+{ 
+
+  <IDENTIFIER>
+
+}

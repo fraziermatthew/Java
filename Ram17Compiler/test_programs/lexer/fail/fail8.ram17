@@ -1,0 +1,10 @@
+@author fraziermatthew
+public class Failing
+{
+	public static void main(String a[])
+	{
+		print(Hello world);
+
+	}
+}
+// Fails because of the @ sign in the annotation

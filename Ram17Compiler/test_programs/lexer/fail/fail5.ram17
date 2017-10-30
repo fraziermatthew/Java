@@ -1,0 +1,9 @@
+class Fail5 {
+public static void main (String[] args){
+
+    integer boo[] = 3;
+    for (int x: boo){
+        x = boo;
+    }
+}
+// This fails because of the colon symbol

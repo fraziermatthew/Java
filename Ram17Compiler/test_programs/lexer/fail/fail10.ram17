@@ -1,0 +1,5 @@
+class AnotherFail {
+public static void main (String[] args){
+    integer x = 10%2;
+}
+// This will fail due to modulus

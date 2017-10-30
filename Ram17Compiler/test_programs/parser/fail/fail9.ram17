@@ -1,0 +1,10 @@
+class DivisionFail
+{
+	public static void main(String[] args)
+	{
+		integer x = 100 / 10;
+	}
+}
+	
+}
+// This fails because of division.

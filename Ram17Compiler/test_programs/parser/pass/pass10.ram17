@@ -1,0 +1,38 @@
+class RelationalOperator {
+    public static void main(String[] args){
+        println(new Test1().testRelationalOperator1());
+    }
+}
+
+class Test1 {
+    integer x;
+    integer y;
+    integer result;
+    public integer testRelationalOperator1(){
+        x = 1; y = 2;
+        if(x eq 0 and y eq 0){
+            result = 0;
+        }
+        else {
+            result = 1;
+        }
+        print(new Test2().testRelationalOperator2());
+        return result;
+    }
+}
+
+class Test2 {
+    integer x;
+    integer y;
+    integer result;
+    public integer testRelationalOperator2(){
+        x = 1; y = 2;
+        if(x eq 0 or y eq 0){
+            result = 2;
+        }
+        else {
+            result = 3;
+        }
+        return result;
+    }
+}

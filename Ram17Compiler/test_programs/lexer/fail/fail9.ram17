@@ -1,0 +1,5 @@
+class Faceplant {
+public static void main (String[] args){
+    print(This should not work because of the quote\n);
+}
+// This will fail because of the escape character, forward slash

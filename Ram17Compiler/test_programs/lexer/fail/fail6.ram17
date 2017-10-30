@@ -1,0 +1,5 @@
+class Fail6 {
+public static void main (String[] args){
+    char a = 'c';
+}
+// This will fail because apostrophe is not defined

@@ -1,0 +1,9 @@
+interface Test10 {
+	public static void main(String[] a) {
+		// Traditional for loop
+		integer array[] = {10,10,10,10};
+		for(integer i = 0; i < array.length; i++){
+			array[i] = i;
+		}
+	}
+}

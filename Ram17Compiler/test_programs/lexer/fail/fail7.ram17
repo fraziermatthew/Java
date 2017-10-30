@@ -1,0 +1,15 @@
+private class Failure
+{
+	private static void main(String a[])
+	{
+		for(integer i = 0; i < 10; i++){
+			bool hungry = 1;
+			bool thirsty = 5;
+				if (hungry && thirsty){
+					print (feed me);
+				}
+			}
+		}
+	}
+} 
+// This will fail because of the && operator
