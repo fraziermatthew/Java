@@ -1,0 +1,17 @@
+class ForLoop{
+	public static void main(String[] args){
+		ImAClass = new ImAClass().runForLoop();
+	}
+
+}
+class ImAClass{
+	integer x;
+    public integer runForLoop(){
+		
+		for (x = 0; x < 10; x = x + 1)
+		{
+			println(x);
+		}
+		return x;
+	}
+}
