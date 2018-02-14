@@ -6,4 +6,3 @@ All programs in this repo have been configured using NetBeans including [Junit](
 
 ## Summary
 A listing of beginnner to intermediate level Java programs featuring example programs in data structures, searching algorithms, sorting algorithms and projects. Inspired by various course projects at West Chester University of Pennsylvania's Computer Science Department.
-
