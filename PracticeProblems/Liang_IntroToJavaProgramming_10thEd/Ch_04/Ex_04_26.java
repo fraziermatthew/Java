@@ -1,13 +1,15 @@
 /* Financial application: monetary units */
 
 import java.util.Scanner;
-public class Ex_03_07 {
+public class Ex_04_26 {
 
    public static void main(String[] args) {
       
       Scanner input = new Scanner(System.in);
       System.out.println("Enter an amount in double, for example 1156: ");
-      int remainder 	= input.nextInt();
+      String amt 	   = input.nextLine();
+      int remainder  = Integer.parseInt( amt.substring(0, amt.indexOf('.') ) + 
+                       amt.substring(amt.indexOf('.') + 1, amt.length()) );
       int Dollars 	= remainder / 100;
       remainder 		= remainder % 100;
       int Quarters 	= remainder / 25;
@@ -32,11 +34,11 @@ public class Ex_03_07 {
          System.out.print(Dimes + " dime, ");
       else
          System.out.print(Dimes + " dimes, ");
-         if (Nickels == 1)
+      if (Nickels == 1)
          System.out.print(Nickels + " nickel, and ");
       else
          System.out.print(Nickels + " nickels, and ");
-         if (Pennies == 1)
+      if (Pennies == 1)
          System.out.print(Pennies + " penny");
       else
          System.out.print(Pennies + " pennies");
