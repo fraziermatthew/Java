@@ -1,6 +1,7 @@
 /* Count positive and negative numbers and compute the average of numbers */
 
 import java.util.Scanner;
+
 public class Ex_05_01 {
 
    public static void main(String[] args) {
@@ -11,6 +12,7 @@ public class Ex_05_01 {
       double total = 0, avg = 0;
       
       if (n == 0)
+         System.out.print("No numbers are entered except 0");
       else {
          while (n != 0) {
             total += n;
@@ -27,6 +29,8 @@ public class Ex_05_01 {
          System.out.println("The number of negatives is " + countNeg);
          System.out.println("The total is " + total);
          System.out.println("The average is " + avg);
+
+         input.close();
       }
    }
 }
